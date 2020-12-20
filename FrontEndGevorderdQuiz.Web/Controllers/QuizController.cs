@@ -25,11 +25,11 @@ namespace FrontEndGevorderdQuiz.Web.Controllers
             {
                 Id = 1,
                 Vraag = "De grondlegger van het World Wide Web is ...",
-                MogelijkAntwoord0 = "Tim Berners-Lee",
+                MogelijkAntwoord0 = "Linus Torvalds",
                 MogelijkAntwoord1 = "Nikola Tesla",
                 MogelijkAntwoord2 = "Bill Gates",
-                MogelijkAntwoord3 = "Linus Torvalds",
-                JuisteAntwoordIndex = 0
+                MogelijkAntwoord3 = "Tim Berners-Lee",
+                JuisteAntwoordIndex = 3
             },
             // TODO: voeg hier nog 20 andere cursus-gerelateerde vragen aan toe.
         };
@@ -48,10 +48,11 @@ namespace FrontEndGevorderdQuiz.Web.Controllers
         /// <summary>
         /// Deze methode ontvangt alle antwoorden van de speler in één keer.
         /// Op te roepen via een HTTP POST naar /api/quiz met een JSON array in de body.
-        /// Je zal dus in de browser elke antwoord moeten bijhouden (vb. in een JavaScript array) en
+        /// Je zal dus in de browser elk antwoord moeten bijhouden (vb. in een JavaScript array) en
         /// vervolgens de volledige array omzetten naar JSON.
         /// </summary>
-        /// <param name="antwoorden"></param>
+        /// <param name="antwoorden">JSON array met de antwoorden van de speler.</param>
+        /// <returns>De score (percentage) van de speler.</returns>
         [HttpPost]
         public QuizResultaat Post([FromBody] IEnumerable<QuizAntwoord> antwoorden)
         {
@@ -61,7 +62,8 @@ namespace FrontEndGevorderdQuiz.Web.Controllers
             foreach (QuizAntwoord antwoord in antwoorden)
             {
                 // Ophalen van de vraag horende bij het antwoord.
-                QuizVraag vraag = _vragen.FirstOrDefault(v => v.Id == antwoord.VraagId);
+                QuizVraag vraag = _vragen
+                    .FirstOrDefault(v => v.Id == antwoord.VraagId);
 
                 // Is het gegeven antwoord ook het juiste antwoord?
                 if (vraag.JuisteAntwoordIndex == antwoord.GekozenAntwoordIndex)
@@ -71,9 +73,10 @@ namespace FrontEndGevorderdQuiz.Web.Controllers
             }
 
             // Berekenen van de score
-            // (met die (float) zetten we een geheel getal om naar een komma-getal zodat we geen gehele deling doen).
+            // (met die (float) zetten we een geheel getal om naar een komma-getal zodat er geen gehele deling gebeurt).
             float scorePercentage = ((float)aantalJuisteAntwoorden / (float)_vragen.Count) * 100;
 
+            // Terugsturen van het resultaat als antwoord op de POST call.
             return new QuizResultaat()
             {
                 Percentage = scorePercentage

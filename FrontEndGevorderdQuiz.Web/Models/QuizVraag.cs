@@ -7,10 +7,20 @@ using System.Threading.Tasks;
 namespace FrontEndGevorderdQuiz.Web.Models
 {
     /// <summary>
-    /// Dit stelt één vraag van de quiz voor.
+    /// Objecten van deze klasse stellen één vraag van de quiz voor.
     /// </summary>
     public class QuizVraag
     {
+        private static int _currentVraagIndex = 0;
+
+        public QuizVraag()
+        {
+            // Telkens er een nieuwe vraag wordt aangemaakt wordt de 
+            // _currentVraagIndex als Id gebruikt waarna deze met 1 
+            // verhoogd wordt.
+            Id = _currentVraagIndex++;
+        }
+
         /// <summary>
         /// Elke vraag heeft een unieke ID.
         /// Deze ID is van belang want het wordt gebruikt in QuizAntwoord.

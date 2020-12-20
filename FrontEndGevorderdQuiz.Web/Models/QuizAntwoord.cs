@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 namespace FrontEndGevorderdQuiz.Web.Models
 {
     /// <summary>
-    /// Dit stelt één antwoord van de speler voor. 
+    /// Objecten van deze klasse stellen één antwoord van de speler voor. 
     /// </summary>
     public class QuizAntwoord
     {
@@ -17,6 +17,7 @@ namespace FrontEndGevorderdQuiz.Web.Models
 
         /// <summary>
         /// Index van het gekozen antwoord (dus 0, 1, 2 of 3).
+        /// Deze index zal vergeleken worden met QuizVraag.JuisteAntwoordIndex.
         /// </summary>
         public int GekozenAntwoordIndex { get; set; }
     }
